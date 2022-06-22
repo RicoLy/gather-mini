@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
-		<image class="logo" src="/static/logo.png" @click="reqs()"></image>
-		<view class="text-area">
+		<image style="border-radius:50%" class="logo" src="/static/icon_dog.jpg"></image>
+		<view>
 			<text class="title">{{title}}</text>
 		</view>
 	</view>
@@ -18,14 +18,7 @@
 
 		},
 		methods: {
-			reqs() {
-				uni.request({
-					url: 'www.baidu.com',
-					success: (res) => {
-						console.log(res);
-					}
-				})
-			}
+
 		}
 	}
 </script>
@@ -41,10 +34,7 @@
 	.logo {
 		height: 200rpx;
 		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
+		margin: 200rpx auto 50rpx auto;
 	}
 
 	.text-area {
