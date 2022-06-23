@@ -1,0 +1,9 @@
+{
+  "name": "InitPlaceMap",
+  "dependencies": {
+    "constInfo": "file:../common/constInfo"
+  },
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

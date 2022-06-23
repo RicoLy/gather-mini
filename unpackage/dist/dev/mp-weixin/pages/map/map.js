@@ -136,30 +136,37 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
-{
-  data: function data() {
-    return {
-      title: 'Hello' };
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
-  },
-  onLoad: function onLoad() {var _this = this;
-    uni.getLocation({
-      success: function success(res) {
-        _this.latitude = res.latitude;
-        _this.longitude = res.longitude;
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _cloudApi = _interopRequireDefault(__webpack_require__(/*! ../../common/cloudApi.js */ 26));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = { data: function data() {return { longitude: "", latitude: "", markers: [] };}, onLoad: function onLoad() {var _this = this;uni.getLocation({ success: function success(res) {console.log('res', res);_this.latitude = res.latitude;_this.longitude = res.longitude;
+        _this.getPlaces(res.longitude, res.latitude);
       } });
 
   },
@@ -169,6 +176,35 @@ var _default =
     },
     onRegionChanged: function onRegionChanged(e) {
       console.log(e);
+    },
+    getPlaces: function getPlaces(longitude, latitude) {var _this2 = this;
+      _cloudApi.default.call({
+        name: "placeMap",
+        data: {
+          action: "listbygeo",
+          longitude: longitude,
+          latitude: latitude,
+          maxDistance: 3000 },
+
+        success: function success(res) {
+          console.log(res);
+
+          var places = res.result;
+          var markers = [];
+          for (var i = 0; i < places.length; i++) {
+            var item = places[i];
+            markers.push({
+              id: i,
+              width: 40,
+              height: 45,
+              latitude: item.geopoint.coordinates[1],
+              longitude: item.geopoint.coordinates[0] });
+
+          }
+
+          _this2.markers = markers;
+        } });
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

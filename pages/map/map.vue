@@ -1,27 +1,34 @@
 <template>
-	<view class="content">
+	<view style="width:100%;height:100%;position: relative;">
 		<map :markers="markers" 
-			 @markertap="btnMarkerTap" 
-			 :latitude="latitude" 
-			 :longitude="longitude" 
-			 :show-location="true" 
-			 @regionchange="onRegionChanged" 
-			 style="width: 100%;height: 100%;"></map>
+			:scale="13" 
+			@markertap="btnMarkerTap" 
+			:latitude="latitude" 
+			:longitude="longitude" 
+			:show-location="true" 
+			@regionchange="onRegionChanged" 
+			style="width: 100%;height: 100%;">
+		</map>
 	</view>
 </template>
 
 <script>
+	import cloudApi from "../../common/cloudApi.js"
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+				longitude:"",
+				latitude:"",
+				markers:[]
 			}
 		},
 		onLoad() {
 			uni.getLocation({
 				success: (res) => {
+					console.log('res', res);
 					this.latitude=res.latitude;
 					this.longitude=res.longitude;
+					this.getPlaces(res.longitude, res.latitude);
 				}
 			})
 		},
@@ -31,35 +38,42 @@
 			},
 			onRegionChanged(e){
 				console.log(e);
+			},
+			getPlaces(longitude, latitude) {
+				cloudApi.call({
+					name:"placeMap",
+					data:{
+						action:"listbygeo",
+						longitude:longitude,
+						latitude:latitude,
+						maxDistance: 3000
+					},
+					success:(res)=>{
+						console.log(res);
+						
+						const places = res.result;
+						var markers = [];
+						for(var i =0;i<places.length;i++){
+							var item = places[i];
+							markers.push({
+								id:i,
+								width:40,
+								height:45,
+								latitude:item.geopoint.coordinates[1],
+								longitude:item.geopoint.coordinates[0],
+							});
+						}
+						
+						this.markers = markers;
+					}
+				})
 			}
 		}
 	}
 </script>
 
 <style>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
-	}
-
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
+	page{
+	 height:100%;
 	}
 </style>

@@ -8,6 +8,7 @@
 </template>
 
 <script>
+	import cloudApi from "../../common/cloudApi.js"
 	export default {
 		data() {
 			return {
@@ -15,7 +16,12 @@
 			}
 		},
 		onLoad() {
-
+			// cloudApi.call({
+			// 	name:"InitPlaceMap",
+			// 	success:(res)=>{
+			// 		console.log(res.result);
+			// 	}
+			// })
 		},
 		methods: {
 
