@@ -2,7 +2,8 @@
 	<view style="width:100%;height:100%;position: relative;">
 		<map :markers="markers" 
 			:scale="13" 
-			@markertap="btnMarkerTap" 
+			@markertap="btnMarkerTap"
+			@labeltap="btnLabelTap"
 			:latitude="latitude" 
 			:longitude="longitude" 
 			:show-location="true" 
@@ -36,8 +37,15 @@
 			btnMarkerTap(e){
 				console.log(e);
 			},
-			onRegionChanged(e){
+			btnLabelTap(e){
 				console.log(e);
+			},
+			onRegionChanged(e){
+				if(e.type=="end"){
+					const latitude = e.detail.centerLocation.latitude;
+					const longitude = e.detail.centerLocation.longitude;
+					this.getPlaces(longitude, latitude);
+				}
 			},
 			getPlaces(longitude, latitude) {
 				cloudApi.call({
@@ -61,6 +69,16 @@
 								height:45,
 								latitude:item.geopoint.coordinates[1],
 								longitude:item.geopoint.coordinates[0],
+								label: {
+									content: item.name.length < 8 ? item.name : `${item.name.slice(0,7)}...`,
+									textAlign: 'center',
+									color: '#FB4747',
+								},
+								callout: {
+									content: `${item.name}\n${item.location}`,
+									textAlign: 'center',
+									color: '#FB4747',
+								}
 							});
 						}
 						
