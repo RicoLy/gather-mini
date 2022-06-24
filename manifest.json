@@ -57,7 +57,7 @@
         "usingComponents" : true,
         "permission" : {
             "scope.userLocation" : {
-                "desc" : ""
+                "desc" : "获取自己的地理位置"
             }
         }
     },
