@@ -6,6 +6,7 @@
 			:latitude="latitude" 
 			:longitude="longitude" 
 			:show-location="true" 
+			@labeltap="btnLabelTap"
 			@regionchange="onRegionChanged" 
 			style="width: 100%;height: 100%;">
 		</map>
@@ -48,9 +49,12 @@
 					}
 				});
 			},
-			// btnLabelTap(e){
-			// 	console.log(e);
-			// },
+			btnLabelTap(e){
+				console.log(e.markerId);
+				const markerId = e.markerId;
+				const place = places[markerId];
+				console.log(place);
+			},
 			onRegionChanged(e){
 				if(e.type=="end"){
 					const latitude = e.detail.centerLocation.latitude;
@@ -62,7 +66,7 @@
 				cloudApi.call({
 					name:"placeMap",
 					data:{
-						action:"listbygeo",
+						action:"listByGeo",
 						longitude:longitude,
 						latitude:latitude,
 						maxDistance: 3000

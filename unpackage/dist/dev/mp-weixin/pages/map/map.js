@@ -151,6 +151,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _cloudApi = _interopRequireDefault(__webpack_require__(/*! ../../common/cloudApi.js */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
@@ -165,8 +166,8 @@ var _cloudApi = _interopRequireDefault(__webpack_require__(/*! ../../common/clou
 //
 //
 //
-var places;var _default = { data: function data() {return { longitude: "", latitude: "", markers: [] };}, onLoad: function onLoad() {var _this = this;uni.getLocation({ success: function success(res) {console.log('res', res);
-        _this.latitude = res.latitude;
+//
+var places;var _default = { data: function data() {return { longitude: "", latitude: "", markers: [] };}, onLoad: function onLoad() {var _this = this;uni.getLocation({ success: function success(res) {console.log('res', res);_this.latitude = res.latitude;
         _this.longitude = res.longitude;
         _this.getPlaces(res.longitude, res.latitude);
       } });
@@ -186,9 +187,12 @@ var places;var _default = { data: function data() {return { longitude: "", latit
         } });
 
     },
-    // btnLabelTap(e){
-    // 	console.log(e);
-    // },
+    btnLabelTap: function btnLabelTap(e) {
+      console.log(e.markerId);
+      var markerId = e.markerId;
+      var place = places[markerId];
+      console.log(place);
+    },
     onRegionChanged: function onRegionChanged(e) {
       if (e.type == "end") {
         var latitude = e.detail.centerLocation.latitude;
@@ -200,7 +204,7 @@ var places;var _default = { data: function data() {return { longitude: "", latit
       _cloudApi.default.call({
         name: "placeMap",
         data: {
-          action: "listbygeo",
+          action: "listByGeo",
           longitude: longitude,
           latitude: latitude,
           maxDistance: 3000 },

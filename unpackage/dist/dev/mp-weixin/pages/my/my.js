@@ -140,6 +140,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
+var _currentUser = _interopRequireDefault(__webpack_require__(/*! ../../common/currentUser.js */ 37));
 var _cloudApi = _interopRequireDefault(__webpack_require__(/*! ../../common/cloudApi.js */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
@@ -149,13 +150,35 @@ var _cloudApi = _interopRequireDefault(__webpack_require__(/*! ../../common/clou
 //
 //
 //
-var _default = { data: function data() {return { title: 'Hello' };}, onLoad: function onLoad() {// cloudApi.call({
-    // 	name:"InitPlaceMap",
-    // 	success:(res)=>{
-    // 		console.log(res.result);
-    // 	}
-    // })
-  }, methods: {} };exports.default = _default;
+var _default = { data: function data() {return { title: 'Hello', userInfo: null };}, onLoad: function onLoad() {
+  },
+  methods: {
+    test: function test() {
+      // cloudApi.call({
+      // 	name:"placeMap",
+      // 	data:{
+      // 		action:"updateByGeo",
+      // 		longitude:'longitude',
+      // 		latitude:'latitude',
+      // 		placeId: '62b435de0d082200010fa834'
+      // 	},
+      // 	success:(res)=>{
+      // 		console.log(res.result);
+      // 	}
+      // })
+
+      // uni.chooseLocation({
+      // 	latitude: '22.540517',
+      // 	longitude: '113.934497',
+      // 	success: (res) => {
+      // 		// this.address= res.address+res.name;
+      // 		// this.longitude=res.longitude;
+      // 		// this.latitude=res.latitude;
+      // 		console.log(res);
+      // 	}
+      // })
+      this.title = "呵呵";
+    } } };exports.default = _default;
 
 /***/ }),
 

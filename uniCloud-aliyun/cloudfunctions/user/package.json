@@ -1,0 +1,10 @@
+{
+  "name": "user",
+  "dependencies": {
+    "const-info": "file:../common/const-info",
+    "wx-common": "file:../common/wx-common"
+  },
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}
