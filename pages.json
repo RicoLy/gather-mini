@@ -4,7 +4,7 @@
 			"path" : "pages/map/map",
 			"style" :                                                                                    
 			{
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "清餐地图",
 				"enablePullDownRefresh": false
 			}
 			

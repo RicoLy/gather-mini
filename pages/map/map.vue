@@ -3,7 +3,6 @@
 		<map :markers="markers" 
 			:scale="13" 
 			@markertap="btnMarkerTap"
-			@labeltap="btnLabelTap"
 			:latitude="latitude" 
 			:longitude="longitude" 
 			:show-location="true" 
@@ -15,6 +14,8 @@
 
 <script>
 	import cloudApi from "../../common/cloudApi.js"
+	
+	let places;
 	export default {
 		data() {
 			return {
@@ -35,11 +36,21 @@
 		},
 		methods: {
 			btnMarkerTap(e){
-				console.log(e);
+				const markerId = e.markerId;
+				const place = places[markerId];
+				uni.openLocation({
+					latitude: place.geopoint.coordinates[1],
+					longitude: place.geopoint.coordinates[0],
+					name: place.name,
+					address: place.formattedAddress,
+					success: function () {
+						console.log('success');
+					}
+				});
 			},
-			btnLabelTap(e){
-				console.log(e);
-			},
+			// btnLabelTap(e){
+			// 	console.log(e);
+			// },
 			onRegionChanged(e){
 				if(e.type=="end"){
 					const latitude = e.detail.centerLocation.latitude;
@@ -59,7 +70,7 @@
 					success:(res)=>{
 						console.log(res);
 						
-						const places = res.result;
+						places = res.result;
 						var markers = [];
 						for(var i =0;i<places.length;i++){
 							var item = places[i];
@@ -72,12 +83,12 @@
 								label: {
 									content: item.name.length < 8 ? item.name : `${item.name.slice(0,7)}...`,
 									textAlign: 'center',
-									color: '#FB4747',
+									color: '#000000',
 								},
 								callout: {
-									content: `${item.name}\n${item.location}`,
+									content: `${item.name}\n${item.formattedAddress}`,
 									textAlign: 'center',
-									color: '#FB4747',
+									color: '#000000',
 								}
 							});
 						}
