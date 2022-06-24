@@ -1356,6 +1356,12 @@ const placeInfos = [
   ]
 
 
+const appId = 'wx14f36794f18drico7ab8';
+const appSecret = '5f48458833f39d014420a43d7rico9f3478c';
+const jwtSecret = '79f3478cRifdaf';
 module.exports = {
-	placeInfos
+	placeInfos,
+	appId,
+	appSecret,
+	jwtSecret
 }

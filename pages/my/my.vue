@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<image style="border-radius:50%" class="logo" src="/static/icon_dog.jpg"></image>
+		<image @click="test" style="border-radius:50%" class="logo" src="/static/icon_dog.jpg"></image>
 		<view>
 			<text class="title">{{title}}</text>
 		</view>
@@ -8,23 +8,45 @@
 </template>
 
 <script>
+	import loginUser from "../../common/currentUser.js"
 	import cloudApi from "../../common/cloudApi.js"
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+				title: 'Hello',
+				userInfo:null,
 			}
 		},
 		onLoad() {
-			// cloudApi.call({
-			// 	name:"InitPlaceMap",
-			// 	success:(res)=>{
-			// 		console.log(res.result);
-			// 	}
-			// })
+			
 		},
 		methods: {
-
+			test(){
+				// cloudApi.call({
+				// 	name:"placeMap",
+				// 	data:{
+				// 		action:"updateByGeo",
+				// 		longitude:'longitude',
+				// 		latitude:'latitude',
+				// 		placeId: '62b435de0d082200010fa834'
+				// 	},
+				// 	success:(res)=>{
+				// 		console.log(res.result);
+				// 	}
+				// })
+				
+				// uni.chooseLocation({
+				// 	latitude: '22.540517',
+				// 	longitude: '113.934497',
+				// 	success: (res) => {
+				// 		// this.address= res.address+res.name;
+				// 		// this.longitude=res.longitude;
+				// 		// this.latitude=res.latitude;
+				// 		console.log(res);
+				// 	}
+				// })
+				this.title = "呵呵";
+			},
 		}
 	}
 </script>
