@@ -1,8 +1,9 @@
 <template>
-	<view class="content">
-		<image @click="test" style="border-radius:50%" class="logo" src="/static/icon_dog.jpg"></image>
+	<view @click="updateUserProfile" class="content">
+		<image @click="test" style="border-radius:50%" class="logo" 
+		:src="userInfo.avatarUrl"></image>
 		<view>
-			<text class="title">{{title}}</text>
+			<text class="title">{{userInfo.nickName}}</text>
 		</view>
 	</view>
 </template>
@@ -13,12 +14,19 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello',
+				// avatarUrl: '',
+				// nickName: '',
 				userInfo:null,
 			}
 		},
-		onLoad() {
-			
+		async onLoad() {
+			this.userInfo = await loginUser.login();
+			// this.avatarUrl = this.userInfo.avatarUrl || '/static/icon_dog.jpg';
+			// this.nickName = this.userInfo.nickName || 'Hello';
+			if(!this.userInfo.avatarUrl) {
+				this.userInfo.avatarUrl = '/static/icon_dog.jpg';
+				this.userInfo.nickName = 'Hello';
+			}
 		},
 		methods: {
 			test(){
@@ -46,6 +54,18 @@
 				// 	}
 				// })
 				this.title = "呵呵";
+			},
+			updateUserProfile(){
+				if (this.userInfo.nickName == "") {
+					return;
+				}
+				uni.getUserProfile({
+					desc: '用于完善会员资料',
+					success: (res) => {
+						this.userInfo = Object.assign(this.userInfo,res.userInfo);
+						loginUser.updateUserInfo(this.userInfo);
+					}
+				})
 			},
 		}
 	}

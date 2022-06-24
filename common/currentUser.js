@@ -11,8 +11,9 @@ const login = () => {
 				provider: "weixin",
 				success: (res) => {
 					cloudApi.call({
-						name: "login",
+						name: "user",
 						data: {
+							action: "login",
 							code: res.code
 						},
 						success: (res) => {

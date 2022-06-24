@@ -97,5 +97,6 @@ module.exports = {
 	getWXACodeUnlimited,
 	msgSecCheck,
 	getAccessToken,
+	getToken,
 	db
 }
