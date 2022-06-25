@@ -145,8 +145,8 @@ var _cloudApi = _interopRequireDefault(__webpack_require__(/*! ../../common/clou
 {
   data: function data() {
     return {
-      avatarUrl: '',
-      nickName: '',
+      avatarUrl: '/static/icon_dog.jpg',
+      nickName: 'Hello',
       userInfo: null };
 
   },

@@ -13,8 +13,8 @@
 	export default {
 		data() {
 			return {
-				avatarUrl: '',
-				nickName: '',
+				avatarUrl: '/static/icon_dog.jpg',
+				nickName: 'Hello',
 				userInfo: null,
 			}
 		},
