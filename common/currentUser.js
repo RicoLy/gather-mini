@@ -1,6 +1,6 @@
 const cloudApi = require('./cloudApi')
 
-let userInfo;
+let userInfo = null;
 
 const login = () => {
 	return new Promise((resolve, reject) => {

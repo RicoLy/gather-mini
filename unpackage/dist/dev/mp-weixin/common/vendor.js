@@ -9203,9 +9203,9 @@ module.exports = {
         "127.0.0.1",
         "192.168.1.6"
     ],
-    "debugPort": 55753,
-    "initialLaunchType": "remote",
-    "servePort": 55754,
+    "debugPort": 63540,
+    "initialLaunchType": "local",
+    "servePort": 63541,
     "skipFiles": [
         "<node_internals>/**/*.js",
         "/Applications/HBuilderX.app/Contents/HBuilderX/plugins/unicloud/**/*.js"
@@ -10031,7 +10031,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /* WEBPACK VAR INJECTION */(function(uni) {var cloudApi = __webpack_require__(/*! ./cloudApi */ 18);
 
-var userInfo;
+var userInfo = null;
 
 var login = function login() {
   return new Promise(function (resolve, reject) {

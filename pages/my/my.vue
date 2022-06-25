@@ -1,8 +1,8 @@
 <template>
 	<view @click="updateUserProfile" class="content">
-		<image style="border-radius:50%" class="logo" :src="avatarUrl"></image>
+		<image style="border-radius:50%" class="logo" :src="userInfo.avatarUrl"></image>
 		<view>
-			<text class="title">{{nickName}}</text>
+			<text class="title">{{userInfo.nickName}}</text>
 		</view>
 	</view>
 </template>
@@ -13,21 +13,14 @@
 	export default {
 		data() {
 			return {
-				avatarUrl: '/static/icon_dog.jpg',
-				nickName: 'Hello',
 				userInfo: null,
 			}
 		},
 		async onLoad() {
 			this.userInfo = await loginUser.login();
 			console.log('loginUser', this.userInfo);
-			if (this.userInfo && this.userInfo.avatarUrl) {
-				this.avatarUrl = this.userInfo.avatarUrl;
-				this.nickName = this.userInfo.nickName;
-			} else {
-				this.avatarUrl = '/static/icon_dog.jpg';
-				this.nickName = 'Hello';
-			}
+			this.userInfo.avatarUrl = this.userInfo.avatarUrl || '/static/icon_dog.jpg';
+			this.userInfo.nickName = this.userInfo.nickName || 'Hello';
 		},
 		methods: {
 			test() {
@@ -56,8 +49,7 @@
 				// })
 			},
 			updateUserProfile() {
-				console.log('updateUserProfile', this.userInfo);
-				if (this.userInfo.avatarUrl !== "") {
+				if (this.userInfo.avatarUrl !== "/static/icon_dog.jpg") {
 					return;
 				}
 				uni.getUserProfile({

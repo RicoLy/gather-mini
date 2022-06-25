@@ -145,21 +145,14 @@ var _cloudApi = _interopRequireDefault(__webpack_require__(/*! ../../common/clou
 {
   data: function data() {
     return {
-      avatarUrl: '/static/icon_dog.jpg',
-      nickName: 'Hello',
       userInfo: null };
 
   },
   onLoad: function onLoad() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
                 _currentUser.default.login());case 2:_this.userInfo = _context.sent;
               console.log('loginUser', _this.userInfo);
-              if (_this.userInfo && _this.userInfo.avatarUrl) {
-                _this.avatarUrl = _this.userInfo.avatarUrl;
-                _this.nickName = _this.userInfo.nickName;
-              } else {
-                _this.avatarUrl = '/static/icon_dog.jpg';
-                _this.nickName = 'Hello';
-              }case 5:case "end":return _context.stop();}}}, _callee);}))();
+              _this.userInfo.avatarUrl = _this.userInfo.avatarUrl || '/static/icon_dog.jpg';
+              _this.userInfo.nickName = _this.userInfo.nickName || 'Hello';case 6:case "end":return _context.stop();}}}, _callee);}))();
   },
   methods: {
     test: function test() {
@@ -188,8 +181,7 @@ var _cloudApi = _interopRequireDefault(__webpack_require__(/*! ../../common/clou
       // })
     },
     updateUserProfile: function updateUserProfile() {var _this2 = this;
-      console.log('updateUserProfile', this.userInfo);
-      if (this.userInfo.avatarUrl !== "") {
+      if (this.userInfo.avatarUrl !== "/static/icon_dog.jpg") {
         return;
       }
       uni.getUserProfile({
