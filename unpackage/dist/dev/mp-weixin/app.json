@@ -31,6 +31,5 @@
       "desc": "获取自己的地理位置"
     }
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }

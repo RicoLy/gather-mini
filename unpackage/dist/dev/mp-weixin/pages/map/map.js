@@ -218,17 +218,13 @@ var places;var _default = { data: function data() {return { longitude: "", latit
             var item = places[i];
             markers.push({
               id: i,
-              width: 40,
-              height: 45,
+              width: 30,
+              height: 30,
+              iconPath: '/static/icon/location.png',
               latitude: item.geopoint.coordinates[1],
               longitude: item.geopoint.coordinates[0],
               label: {
                 content: item.name.length < 8 ? item.name : "".concat(item.name.slice(0, 7), "..."),
-                textAlign: 'center',
-                color: '#000000' },
-
-              callout: {
-                content: "".concat(item.name, "\n").concat(item.formattedAddress),
                 textAlign: 'center',
                 color: '#000000' } });
 

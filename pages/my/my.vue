@@ -1,9 +1,8 @@
 <template>
 	<view @click="updateUserProfile" class="content">
-		<image @click="test" style="border-radius:50%" class="logo" 
-		:src="userInfo.avatarUrl"></image>
+		<image style="border-radius:50%" class="logo" :src="avatarUrl"></image>
 		<view>
-			<text class="title">{{userInfo.nickName}}</text>
+			<text class="title">{{nickName}}</text>
 		</view>
 	</view>
 </template>
@@ -14,22 +13,24 @@
 	export default {
 		data() {
 			return {
-				// avatarUrl: '',
-				// nickName: '',
-				userInfo:null,
+				avatarUrl: '',
+				nickName: '',
+				userInfo: null,
 			}
 		},
 		async onLoad() {
 			this.userInfo = await loginUser.login();
-			// this.avatarUrl = this.userInfo.avatarUrl || '/static/icon_dog.jpg';
-			// this.nickName = this.userInfo.nickName || 'Hello';
-			if(!this.userInfo.avatarUrl) {
-				this.userInfo.avatarUrl = '/static/icon_dog.jpg';
-				this.userInfo.nickName = 'Hello';
+			console.log('loginUser', this.userInfo);
+			if (this.userInfo && this.userInfo.avatarUrl) {
+				this.avatarUrl = this.userInfo.avatarUrl;
+				this.nickName = this.userInfo.nickName;
+			} else {
+				this.avatarUrl = '/static/icon_dog.jpg';
+				this.nickName = 'Hello';
 			}
 		},
 		methods: {
-			test(){
+			test() {
 				// cloudApi.call({
 				// 	name:"placeMap",
 				// 	data:{
@@ -42,7 +43,7 @@
 				// 		console.log(res.result);
 				// 	}
 				// })
-				
+
 				// uni.chooseLocation({
 				// 	latitude: '22.540517',
 				// 	longitude: '113.934497',
@@ -53,16 +54,18 @@
 				// 		console.log(res);
 				// 	}
 				// })
-				this.title = "呵呵";
 			},
-			updateUserProfile(){
-				if (this.userInfo.nickName == "") {
+			updateUserProfile() {
+				console.log('updateUserProfile', this.userInfo);
+				if (this.userInfo.avatarUrl !== "") {
 					return;
 				}
 				uni.getUserProfile({
 					desc: '用于完善会员资料',
 					success: (res) => {
-						this.userInfo = Object.assign(this.userInfo,res.userInfo);
+						this.userInfo = Object.assign(this.userInfo, res.userInfo);
+						this.avatarUrl = this.userInfo.avatarUrl || '/static/icon_dog.jpg';
+						this.nickName = this.userInfo.nickName || 'Hello';
 						loginUser.updateUserInfo(this.userInfo);
 					}
 				})

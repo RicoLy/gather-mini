@@ -1,1 +1,1 @@
-<view data-event-opts="{{[['tap',[['updateUserProfile',['$event']]]]]}}" class="content" bindtap="__e"><image class="logo" style="border-radius:50%;" src="{{userInfo.avatarUrl}}" data-event-opts="{{[['tap',[['test',['$event']]]]]}}" bindtap="__e"></image><view><text class="title">{{userInfo.nickName}}</text></view></view>
+<view data-event-opts="{{[['tap',[['updateUserProfile',['$event']]]]]}}" class="content" bindtap="__e"><image class="logo" style="border-radius:50%;" src="{{avatarUrl}}"></image><view><text class="title">{{nickName}}</text></view></view>
