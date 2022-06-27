@@ -11,15 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d30aa769-0ce1-484b-962e-c13d1096904c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.hbuilderx/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/.hbuilderx/launch.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/currentUser.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/currentUser.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/my/my.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/my/my.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uniCloud-aliyun/cloudfunctions/common/const-info/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/uniCloud-aliyun/cloudfunctions/common/const-info/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/common/main.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/common/main.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/common/vendor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/common/vendor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/pages/map/map.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/pages/map/map.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/pages/my/my.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/pages/my/my.js.map" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,6 +54,7 @@
       <workItem from="1656123873386" duration="749000" />
       <workItem from="1656133163793" duration="66000" />
       <workItem from="1656133234930" duration="38000" />
+      <workItem from="1656134130720" duration="157000" />
     </task>
     <servers />
   </component>
