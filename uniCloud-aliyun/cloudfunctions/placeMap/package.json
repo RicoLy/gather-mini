@@ -1,6 +1,8 @@
 {
   "name": "placeMap",
-  "dependencies": {},
+  "dependencies": {
+    "const-info": "file:../common/const-info"
+  },
   "extensions": {
     "uni-cloud-jql": {}
   }
