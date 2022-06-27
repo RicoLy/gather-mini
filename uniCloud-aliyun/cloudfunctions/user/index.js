@@ -1,5 +1,5 @@
 'use strict';
-const {appId, appSecret} = require('const-info');
+const {appId, appSecret, gdKey} = require('const-info');
 const {getToken, verifyToken} = require('wx-common');
 const db = uniCloud.database();
 
@@ -65,6 +65,19 @@ const router = {
 		});
 		
 		return dbRes.data;
+	},
+	getLocation: async (event, context) => {
+		console.log("searchPlace|event", event);
+		const {params} = event;
+		const {location} = params;
+		const url = `https://restapi.amap.com/v3/geocode/regeo?output=xml&location=${location}&key=${gdKey}&radius=1000&extensions=base`;
+		const res = await uniCloud.httpclient.request(
+			url,
+			{
+				dataType:"json"
+			}
+		);
+		return res;
 	}
 }
 

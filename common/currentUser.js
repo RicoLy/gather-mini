@@ -30,6 +30,14 @@ const login = () => {
 	})
 }
 
+const getLocation = () => {
+	uni.getLocation({
+		success: (res) => {
+			console.log(res)
+		}
+	})
+}
+
 const logout = () => {
 	userInfo = null;
 }
