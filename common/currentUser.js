@@ -1,6 +1,6 @@
 const cloudApi = require('./cloudApi')
 
-let userInfo;
+let userInfo = null;
 
 const login = () => {
 	return new Promise((resolve, reject) => {
@@ -11,8 +11,9 @@ const login = () => {
 				provider: "weixin",
 				success: (res) => {
 					cloudApi.call({
-						name: "login",
+						name: "user",
 						data: {
+							action: "login",
 							code: res.code
 						},
 						success: (res) => {

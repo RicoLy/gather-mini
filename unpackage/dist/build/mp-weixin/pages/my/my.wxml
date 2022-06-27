@@ -1,1 +1,1 @@
-<view class="content"><image class="logo" style="border-radius:50%;" src="/static/icon_dog.jpg"></image><view><text class="title">{{title}}</text></view></view>
+<view data-event-opts="{{[['tap',[['updateUserProfile',['$event']]]]]}}" class="content" bindtap="__e"><image class="logo" style="border-radius:50%;" src="{{userInfo.avatarUrl}}"></image><view><text class="title">{{userInfo.nickName}}</text></view></view>

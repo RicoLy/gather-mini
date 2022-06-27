@@ -27,8 +27,8 @@ const router = {
 		let userData;
 		if(dbRes.affectedDocs<=0){
 			userData = {
-				nickName:"Hello",
-				avatarUrl:"/static/icon_dog.jpg",
+				nickName:"",
+				avatarUrl:"",
 				gender:0,
 				country:"",
 				province:"",
