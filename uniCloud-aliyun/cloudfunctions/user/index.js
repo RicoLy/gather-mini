@@ -68,16 +68,17 @@ const router = {
 	},
 	getLocation: async (event, context) => {
 		console.log("searchPlace|event", event);
-		const {params} = event;
+		const {params,token } = event;
+		const payload = verifyToken(token);
 		const {location} = params;
-		const url = `https://restapi.amap.com/v3/geocode/regeo?output=xml&location=${location}&key=${gdKey}&radius=1000&extensions=base`;
+		const url = `https://restapi.amap.com/v3/geocode/regeo?output=json&location=${location}&key=${gdKey}&radius=1000&extensions=base`;
 		const res = await uniCloud.httpclient.request(
 			url,
 			{
 				dataType:"json"
 			}
 		);
-		return res;
+		return res.data.regeocode.addressComponent;
 	}
 }
 

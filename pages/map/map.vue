@@ -30,25 +30,36 @@
 
 <script>
 	import cloudApi from "../../common/cloudApi.js"
-	
+	import loginUser from "../../common/currentUser.js"
 	let places;
 	export default {
 		data() {
 			return {
 				longitude:"",
 				latitude:"",
-				markers:[]
+				markers:[],
+				userInfo: null
 			}
 		},
-		onLoad() {
+		async onLoad() {
+			// 获取位置
 			uni.getLocation({
 				success: (res) => {
 					console.log('res', res);
-					this.latitude=res.latitude;
 					this.longitude=res.longitude;
-					this.getPlaces(res.longitude, res.latitude);
+					this.latitude=res.latitude;
 				}
 			})
+			// 微信登录
+			this.userInfo = await loginUser.login();
+			const location = await loginUser.getLocation(`${this.longitude},${this.latitude}`);
+			this.userInfo.location = {
+				province: location.province,
+				city: location.city,
+				district: location.district
+			}
+			console.log(this.userInfo);
+			this.getPlaces(this.longitude, this.latitude);
 		},
 		methods: {
 			btnMarkerTap(e){
@@ -120,7 +131,22 @@
 						params: params,
 					},
 					success:(res)=>{
-						console.log(res);
+						const result = res.result;
+						console.log(places);
+						const [place] = result;
+						if (!place) {
+							return
+						}
+						const [longitude,latitude] = place.location.split(',');
+						uni.openLocation({
+							latitude: +latitude,
+							longitude: +longitude,
+							name: place.name,
+							address: place.address,
+							success: function () {
+								console.log('success');
+							}
+						});
 					}
 				})
 			},
@@ -132,6 +158,7 @@
 				} else {
 					this.searchPlace({
 						keywords,
+						city: this.userInfo.location.city
 					})
 				}
 			}

@@ -1,6 +1,7 @@
 const cloudApi = require('./cloudApi')
 
 let userInfo = null;
+let locate = null;
 
 const login = () => {
 	return new Promise((resolve, reject) => {
@@ -30,12 +31,28 @@ const login = () => {
 	})
 }
 
-const getLocation = () => {
-	uni.getLocation({
-		success: (res) => {
-			console.log(res)
+const getLocation = (location) => {
+	return new Promise((resolve, reject) => {
+		if (locate !== null) {
+			resolve(locate);
 		}
-	})
+		cloudApi.call({
+			name: "user",
+			data: {
+				action: "getLocation",
+				params: {
+					location: location
+				}
+			},
+			success: (res) => {
+				locate = res.result;
+				resolve(res.result);
+			},
+			fail: (err) => {
+				reject();
+			}
+		})
+	});
 }
 
 const logout = () => {
@@ -66,5 +83,6 @@ module.exports = {
 	isLogin,
 	getUserInfo,
 	updateUserInfo,
-	logout
+	logout,
+	getLocation
 }

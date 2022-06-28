@@ -2,6 +2,7 @@
 const db = uniCloud.database();
 const dbCmd = db.command;
 const {gdKey} = require('const-info');
+const {verifyToken} = require('wx-common');
 
 // router 路由
 const router = {
@@ -33,8 +34,13 @@ const router = {
 		const {params} = event;
 		const {keywords, city} = params;
 		const url = `https://restapi.amap.com/v3/place/text?keywords=${keywords}&city=${city}&offset=20&page=1&key=${gdKey}&extensions=all`;
-		
-		return url;
+		const res = await uniCloud.httpclient.request(
+			url,
+			{
+				dataType:"json"
+			}
+		);
+		return res.data.pois;
 	}
 }
 
@@ -45,6 +51,8 @@ exports.main = async (event, context) => {
 	//event为客户端上传的参数
 	console.log('event : ', event);
 	console.log('event.action : ', event.action);
+	const {token} = event;
+	const payload = verifyToken(token);
 	
 	return router[event.action](event, context);
 };
