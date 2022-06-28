@@ -20,25 +20,45 @@
 					<input style="height: 70rpx;padding-left: 70rpx;" type="text" class="bg-light font-md rounded-circle" placeholder="搜索" @blur="search"/>
 				</view>
 				<view style="width: 70rpx;height: 70rpx;"
-				class="flex align-center justify-center bg-light rounded-circle mr-0" hover-class="bg-hover-light">
+				class="flex align-center justify-center bg-light rounded-circle mr-0" @click="openMoreDialog" hover-class="bg-hover-light">
 					<text class="iconfont icon-gengduo"></text>
 				</view>
 			</view>
+			
+			<!-- 排序框 -->
+			<uni-popup ref="more" type="bottom">
+				<view class="bg-white">
+					<view v-for="(item,index) in moreOptions" :key="index" class="flex align-center justify-center py-3 font border-bottom border-light-secondary" hover-class="bg-light" @click="changeMore(index)">
+						{{item.name}}
+					</view>
+				</view>
+			</uni-popup>
 		</map>
 	</view>
 </template>
 
 <script>
+	import uniPopup from '@/components/uni-ui/uni-popup/uni-popup.vue'
 	import cloudApi from "../../common/cloudApi.js"
 	import loginUser from "../../common/currentUser.js"
 	let places;
 	export default {
+		components: {
+			uniPopup
+		},
 		data() {
 			return {
 				longitude:"",
 				latitude:"",
 				markers:[],
-				userInfo: null
+				userInfo: null,
+				moreOptions:[{
+					name:"更多",
+					key:"more"
+				},{
+					name:"添加",
+					key:"add"
+				}],
 			}
 		},
 		async onLoad() {
@@ -160,6 +180,20 @@
 						keywords,
 						city: this.userInfo.location.city
 					})
+				}
+			},
+			openMoreDialog(){
+				this.$refs.more.open()
+			},
+			changeMore(key){
+				if(key === 0){
+					return uni.navigateTo({
+						url: '/pages/placeList/placeList',
+					});
+				} else {
+					return uni.navigateTo({
+						url: '/pages/addPlace/addPlace',
+					});
 				}
 			}
 		}
