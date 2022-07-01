@@ -1356,8 +1356,8 @@ const placeInfos = [
 ];
 
 
-const appId = 'wx14f36794f18d7ab8';
-const appSecret = '5f48458833f39d014420a43d79f3478c';
+const appId = 'wx14f36794f18ricod7ab8';
+const appSecret = '5f48458833f39d014420arico43d79f3478c';
 const jwtSecret = '79f3478cRifdaf';
 const gdKey = "ebec68b8babdf0e0e66ecd377f82fc4b";
 module.exports = {
