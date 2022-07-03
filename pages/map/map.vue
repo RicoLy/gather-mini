@@ -147,7 +147,7 @@
 				cloudApi.call({
 					name:"placeMap",
 					data:{
-						action:"searchPlace",
+						action:"search",
 						params: params,
 					},
 					success:(res)=>{

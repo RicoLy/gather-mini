@@ -4,7 +4,7 @@
       <text class="uni-h6">列表组件可以在其中使用图标、略缩图或放置任何你想放的元素，使用场景如：导航菜单、列表、设置中心排版等</text>
 
     </uni-card>
-    <uni-list v-for="(placeItem, placeIndex) in placeDates">
+    <uni-list :border="true" v-for="(placeItem, placeIndex) in placeDates">
       <uni-list-item link>
         <!-- 自定义 header -->
         <template v-slot:header>
