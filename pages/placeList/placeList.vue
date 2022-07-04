@@ -31,7 +31,7 @@
 		<!-- 列表 -->
 		<view class="position-relative" style="top: 90rpx;">
 			<uni-list :border="true" v-for="(placeItem, placeIndex) in placeDates">
-				<uni-list-item direction="row" link>
+				<uni-list-item direction="row" link :to="'/pages/addPlace/addPlace?id=' + placeItem._id">
 					<template v-slot:header>
 						<view class="slot-box">
 							<image class="slot-image"
@@ -49,12 +49,22 @@
 									<text class="font-sm text-light-black flex-2 text-right">联系方式: </text>
 									<text class="font-sm text-success flex-3 text-left">{{placeItem.phone}}</text>
 								</view>
-								<view class="flex w-100">
-									<text class="font-sm text-light-black flex-1 text-center">{{placeItem.intro}}</text>
+								<view class="flex w-100" v-if="placeItem.businessHours">
+									<text class="font-sm text-light-black flex-2 text-right">营业时间: </text>
+									<text class="font-sm text-success flex-3 text-left">{{placeItem.businessHours}}</text>
+								</view>
+								<view class="flex w-100" v-if="placeItem.intro">
+									<text class="font-sm text-light-black flex-2 text-right">简介: </text>
+									<text class="font-sm text-success flex-3 text-left">{{placeItem.intro}}</text>
+								</view>
+								<view class="flex w-100" v-if="placeItem.privateRoom">
+									<text class="font-sm text-light-black flex-2 text-right">包间情况: </text>
+									<text class="font-sm text-success flex-3 text-left">{{placeItem.privateRoom}}</text>
 								</view>
 							</view>
 							<view class="slot-box flex1 flex justify-end w-100">
-								<text class="font-small text-light-black text-right">{{placeItem.formattedAddress}}</text>
+								<button type="primary"  @click.stop="btnDeletePlace(placeIndex)" class="w-100 flex-1 font-small">删除</button>
+								<text class="font-small flex-5 text-light-black text-right">{{placeItem.formattedAddress}}</text>
 							</view>
 						</view>
 					</template>
@@ -111,7 +121,10 @@
 				console.log(this.keywords);
 			},
 			addPlace() {
-
+				console.log('addPlace');
+				uni.navigateTo({
+					url: '/pages/addPlace/addPlace'
+				})
 			},
 			getPlaces(params) {
 				cloudApi.call({
@@ -130,6 +143,31 @@
 						this.placeDates = result
 					}
 				});
+			},
+			btnDeletePlace(index) {
+				console.log(index);
+				uni.showModal({
+					content:"确定要删除吗？",
+					success: (res) => {
+						console.log(res);
+						if(res.confirm){
+							const [delItem] = this.placeDates.splice(index, 1)
+							console.log(delItem);
+							// cloudApi.call({
+							// 	name: "placeMap",
+							// 	data: {
+							// 		action: "deletePlaceById",
+							// 		id: delItem._id,
+							// 	},
+							// 	success: (res) => {
+							// 		const result = res.result;
+							// 		console.log(result);
+							// 		this.placeDates = result
+							// 	}
+							// });
+						}
+					}
+				})
 			}
 		}
 	}

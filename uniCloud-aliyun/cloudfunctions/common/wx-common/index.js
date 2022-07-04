@@ -47,8 +47,8 @@ const getAccessToken = async (forceUpdate = false) => {
 	}
 }
 
-const getToken = (openid)=>{
-	return jwt.sign({openid:openid},jwtSecret,{expiresIn:60*60*24});
+const getToken = (tokenInfo)=>{
+	return jwt.sign({tokenInfo:tokenInfo},jwtSecret,{expiresIn:60*60*24});
 }
 
 const verifyToken = (token) => {

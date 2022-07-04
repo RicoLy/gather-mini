@@ -57,6 +57,7 @@
 	export default {
 		data() {
 			return {
+				id: '',
 				name: '',
 				longitude: '',
 				latitude: '',
@@ -70,6 +71,39 @@
 				type: 1,
 				array: ['餐厅', '寺院'],
 				index: 0,
+			}
+		},
+		onLoad(options) {
+			if(options.id){
+				this.id = options.id;
+				cloudApi.call({
+					name:"placeMap",
+					data:{
+						action: "getPlaceById",
+						id: this.id
+					},
+					success:(res)=>{
+						const [result] = res.result;
+						console.log('result', result);
+						if(result) {
+							this.id = result._id;
+							this.name = result.name;
+							this.longitude = result.geopoint.coordinates[0];
+							this.latitude = result.geopoint.coordinates[1];
+							this.intro = result.intro;
+							this.phone = result.phone;
+							this.privateRoom = result.privateRoom;
+							this.businessHours = result.businessHours;
+							this.type = result.type;
+							this.address = result.formattedAddress
+						}
+						if(this.type === 1) {
+							this.index = 0;
+						} else {
+							this.index = 1;
+						}
+					}
+				})
 			}
 		},
 		methods: {
@@ -109,11 +143,13 @@
 					mask:true,
 					title:"请选择正确的地址"
 				})
+				
 				cloudApi.call({
 					name: "placeMap",
 					data: {
-						action: "addPlace",
+						action: this.id?"updatePlace":"addPlace",
 						params: {
+							id: this.id,
 							name: this.name,
 							longitude: this.longitude,
 							latitude: this.latitude,
@@ -127,11 +163,11 @@
 					success: (res) => {
 						const result = res.result;
 						console.log(result);
-						if(result.id) {
-							uni.navigateBack();
+						if(result.id || result.updated) {
+							uni.navigateBack()
 						}
 					}
-				});
+				})
 			}
 		}
 	}

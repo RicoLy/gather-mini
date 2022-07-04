@@ -21,8 +21,6 @@ const router = {
 		let dbRes = await db.collection("users").where({
 				openid:openid
 			}).limit(1).get();
-			
-		let token = getToken(openid);
 		
 		let userData;
 		if(dbRes.affectedDocs<=0){
@@ -42,6 +40,19 @@ const router = {
 			//不要泄露用户的openid
 			delete userData["openid"];
 		}
+		
+		const roleRes = await db.collection("roles").where({
+				openid:openid
+			}).limit(1).get();
+		const tokenInfo = {
+			openid,
+			nickName
+		}
+		if (roleRes.affectedDocs>=0){
+			tokenInfo.roles = roleRes.data[0].roles;
+		}
+		const token = getToken(tokenInfo);
+		
 		userData["token"]=token;
 		
 		return userData;

@@ -83,6 +83,40 @@ const router = {
 		//返回数据给客户端
 		return dbRes?dbRes.data:null;
 	},
+	updatePlace: async (event, context) => {
+		const {params} = event;
+		const {
+			id,
+			name,
+			longitude,
+			latitude,
+			intro,
+			phone,
+			privateRoom,
+			businessHours,
+			type
+		} = params;
+		const coordinate = `${longitude},${latitude}`;
+		const location = await getLocationByGeo(coordinate);
+		const dbRes = await db.collection("placeMaps").where({
+			"_id":dbCmd.eq(id),
+		}).limit(1).update({
+			city: location.addressComponent.city,
+			district: location.addressComponent.district,
+			name: name,
+			location: location.formatted_address,
+			phone: phone,
+			intro: intro,
+			privateRoom: privateRoom,
+			businessHours: businessHours,
+			coordinate: coordinate,
+			geopoint: new db.Geo.Point(+longitude, +latitude),
+			formattedAddress: location.formatted_address,
+			type: type
+		})
+		
+		return dbRes;
+	},
 	addPlace: async (event, context) => {
 		const {params} = event;
 		const {
@@ -98,22 +132,45 @@ const router = {
 		const coordinate = `${longitude},${latitude}`;
 		const location = await getLocationByGeo(coordinate);
 		console.log(location);
-		const res = await db.collection("placeMap").add({
+		const res = await db.collection("placeMaps").add({
 			city: location.addressComponent.city,
 			district: location.addressComponent.district,
 			name: name,
-			location: location.formattedAddress,
+			location: location.formatted_address,
 			phone: phone,
 			intro: intro,
 			privateRoom: privateRoom,
 			businessHours: businessHours,
 			coordinate: coordinate,
 			geopoint: new db.Geo.Point(+longitude, +latitude),
-			formattedAddress: location.formattedAddress,
+			formattedAddress: location.formatted_address,
 			type: type
 		});
 		
 		return res
+	},
+	getPlaceById: async (event, context) => {
+		console.log(event);
+		const {id} = event;
+		console.log(id);
+		const dbRes = await db.collection('placeMaps').where({
+			_id:dbCmd.eq(id)
+		})
+		.limit(1)
+		.get();
+		
+		return dbRes?dbRes.data:null;
+	},
+	deletePlaceById: async (event, context) => {
+		console.log(event);
+		const {id} = event;
+		console.log(id);
+		const dbRes = await db.collection("bookshelfs").where({
+			"_id":dbCmd.eq(event._id),
+			"owner":dbCmd.eq(payload.openid)
+		}).remove();
+		
+		return dbRes;
 	}
 }
 
@@ -126,6 +183,6 @@ exports.main = async (event, context) => {
 	console.log('event.action : ', event.action);
 	const {token} = event;
 	const payload = verifyToken(token);
-	
+	event.payload = payload;
 	return router[event.action](event, context);
 };
