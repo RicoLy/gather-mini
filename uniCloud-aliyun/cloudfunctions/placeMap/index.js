@@ -2,7 +2,7 @@
 const db = uniCloud.database();
 const dbCmd = db.command;
 const {gdKey} = require('const-info');
-const {verifyToken} = require('wx-common');
+const {verifyToken, responseErr, responseOk, checkHasRole} = require('wx-common');
 
 const getLocationByGeo = async (coordinate) => {
 	const url = `https://restapi.amap.com/v3/geocode/regeo?key=${gdKey}&location=${coordinate}`;
@@ -19,6 +19,9 @@ const getLocationByGeo = async (coordinate) => {
 // router 路由
 const router = {
 	listByGeo: async (event, context) => {
+		const {payload} = event;
+		const {tokenInfo} = payload;
+		console.log('tokenInfo', tokenInfo);
 		const dbRes = await db.collection('placeMaps').where({
 			geopoint:dbCmd.geoNear({
 				geometry: new db.Geo.Point(event.longitude, event.latitude),
@@ -84,6 +87,9 @@ const router = {
 		return dbRes?dbRes.data:null;
 	},
 	updatePlace: async (event, context) => {
+		if (!checkHasRole('admin', event)) {
+			return responseErr("暂无权限,请联系管理员！")
+		}
 		const {params} = event;
 		const {
 			id,
@@ -115,9 +121,12 @@ const router = {
 			type: type
 		})
 		
-		return dbRes;
+		return responseOk(dbRes);
 	},
 	addPlace: async (event, context) => {
+		if (!checkHasRole('admin', event)) {
+			return responseErr("暂无权限,请联系管理员！")
+		}
 		const {params} = event;
 		const {
 			name,
@@ -147,7 +156,7 @@ const router = {
 			type: type
 		});
 		
-		return res
+		return responseOk(res)
 	},
 	getPlaceById: async (event, context) => {
 		console.log(event);
@@ -162,15 +171,17 @@ const router = {
 		return dbRes?dbRes.data:null;
 	},
 	deletePlaceById: async (event, context) => {
+		if (!checkHasRole('admin', event)) {
+			return responseErr("暂无权限,请联系管理员！")
+		}
 		console.log(event);
 		const {id} = event;
 		console.log(id);
-		const dbRes = await db.collection("bookshelfs").where({
-			"_id":dbCmd.eq(event._id),
-			"owner":dbCmd.eq(payload.openid)
+		const dbRes = await db.collection("placeMaps").where({
+			"_id":dbCmd.eq(id),
 		}).remove();
 		
-		return dbRes;
+		return responseOk(dbRes);
 	}
 }
 
@@ -183,6 +194,7 @@ exports.main = async (event, context) => {
 	console.log('event.action : ', event.action);
 	const {token} = event;
 	const payload = verifyToken(token);
+	console.log('payload', payload.tokenInfo);
 	event.payload = payload;
 	return router[event.action](event, context);
 };

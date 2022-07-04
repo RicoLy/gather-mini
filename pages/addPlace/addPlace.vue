@@ -117,20 +117,34 @@
 				}
 			},
 			btnChooseLocation(){
-				uni.getLocation({
-					success: (res) => {
-						uni.chooseLocation({
-							latitude:res.latitude,
-							longitude:res.longitude,
-							success: (res) => {
-								console.log(res);
-								this.address= res.address+res.name;
-								this.longitude=res.longitude;
-								this.latitude=res.latitude;
-							}
-						})
-					}
-				})
+				if (this.latitude==""||this.longitude=="") {
+					uni.getLocation({
+						success: (res) => {
+							uni.chooseLocation({
+								latitude:res.latitude,
+								longitude:res.longitude,
+								success: (res) => {
+									console.log(res);
+									this.address= res.address+res.name;
+									this.longitude=res.longitude;
+									this.latitude=res.latitude;
+								}
+							})
+						}
+					})
+				} else {
+					uni.chooseLocation({
+						latitude:this.latitude,
+						longitude:this.longitude,
+						success: (res) => {
+							console.log(res);
+							this.address= res.address+res.name;
+							this.longitude=res.longitude;
+							this.latitude=res.latitude;
+						}
+					})
+				}
+				
 			},
 			btnSavePlaces(){
 				if(this.name == "")return uni.showToast({
@@ -163,7 +177,14 @@
 					success: (res) => {
 						const result = res.result;
 						console.log(result);
-						if(result.id || result.updated) {
+						if(result.code !== 0) {
+							uni.showToast({
+								title: result.msg,
+								mask:true,
+								icon: 'none',
+								duration: 2000
+							});
+						} else {
 							uni.navigateBack()
 						}
 					}

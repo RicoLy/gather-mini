@@ -92,11 +92,34 @@ const getWXACodeUnlimited = async (scene, page) => {
 	return res.data;
 }
 
+const responseErr = (msg) => {
+	return {code: -1, msg}
+}
+
+const responseOk = (data) => {
+	return {code: 0, data, msg: "ok"}
+}
+
+const checkHasRole = (role, event) => {
+	const {payload} = event;
+	const {tokenInfo} = payload;
+	console.log('tokenInfo', tokenInfo);
+	
+	if(!tokenInfo.roles || !tokenInfo.roles.includes('admin')) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
 module.exports = {
 	verifyToken,
 	getWXACodeUnlimited,
 	msgSecCheck,
 	getAccessToken,
 	getToken,
-	db
+	db,
+	responseOk,
+	responseErr,
+	checkHasRole
 }

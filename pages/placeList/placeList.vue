@@ -151,20 +151,28 @@
 					success: (res) => {
 						console.log(res);
 						if(res.confirm){
-							const [delItem] = this.placeDates.splice(index, 1)
+							const delItem = this.placeDates[index];
 							console.log(delItem);
-							// cloudApi.call({
-							// 	name: "placeMap",
-							// 	data: {
-							// 		action: "deletePlaceById",
-							// 		id: delItem._id,
-							// 	},
-							// 	success: (res) => {
-							// 		const result = res.result;
-							// 		console.log(result);
-							// 		this.placeDates = result
-							// 	}
-							// });
+							cloudApi.call({
+								name: "placeMap",
+								data: {
+									action: "deletePlaceById",
+									id: delItem._id,
+								},
+								success: (res) => {
+									const result = res.result;
+									if(result.code !== 0) {
+										uni.showToast({
+											title: result.msg,
+											mask:true,
+											icon: 'none',
+											duration: 2000
+										});
+									} else {
+										this.placeDates.splice(index, 1)
+									}
+								}
+							});
 						}
 					}
 				})

@@ -1,4 +1,5 @@
 'use strict';
+const { log } = require('console');
 const {appId, appSecret, gdKey} = require('const-info');
 const {getToken, verifyToken} = require('wx-common');
 const db = uniCloud.database();
@@ -40,17 +41,22 @@ const router = {
 			//不要泄露用户的openid
 			delete userData["openid"];
 		}
-		
-		const roleRes = await db.collection("roles").where({
-				openid:openid
-			}).limit(1).get();
 		const tokenInfo = {
 			openid,
-			nickName
+			nickName: userData.nickName
 		}
-		if (roleRes.affectedDocs>=0){
-			tokenInfo.roles = roleRes.data[0].roles;
+		
+		if (userData._id) {
+			const roleRes = await db.collection("roles").where({
+				userId:userData._id
+			}).limit(1).get();
+			if (roleRes.affectedDocs>0){
+				tokenInfo.roles = JSON.parse(roleRes.data[0].roles);
+			}
 		}
+		
+		
+		
 		const token = getToken(tokenInfo);
 		
 		userData["token"]=token;
@@ -81,6 +87,7 @@ const router = {
 		console.log("searchPlace|event", event);
 		const {params,token } = event;
 		const payload = verifyToken(token);
+	    console.log(payload);
 		const {location} = params;
 		const url = `https://restapi.amap.com/v3/geocode/regeo?output=json&location=${location}&key=${gdKey}&radius=1000&extensions=base`;
 		const res = await uniCloud.httpclient.request(

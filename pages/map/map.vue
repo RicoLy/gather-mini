@@ -100,6 +100,9 @@
 				const markerId = e.markerId;
 				const place = places[markerId];
 				console.log(place);
+				uni.navigateTo({
+					url: `/pages/addPlace/addPlace?id=${place._id}`
+				})
 			},
 			onRegionChanged(e){
 				if(e.type=="end"){
@@ -128,7 +131,7 @@
 								id:i,
 								width:30,
 								height:30,
-								iconPath: '/static/icon/location.png',
+								iconPath: item.type===1?'/static/icon/restaurant.png':'/static/icon/mosques.png',
 								latitude:item.geopoint.coordinates[1],
 								longitude:item.geopoint.coordinates[0],
 								label: {
