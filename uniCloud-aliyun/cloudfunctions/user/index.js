@@ -34,7 +34,9 @@ const router = {
 				city:""
 			}
 			//不要泄露用户的openid
-			await db.collection("users").add({openid:openid,...userData});
+			const {id} = await db.collection("users").add({openid:openid,...userData});
+			console.log('login|id', id);
+			userData._id = id
 		}else{
 			userData = dbRes.data[0];
 			
@@ -42,6 +44,7 @@ const router = {
 			delete userData["openid"];
 		}
 		const tokenInfo = {
+			id: userData._id,
 			openid,
 			nickName: userData.nickName
 		}
@@ -55,7 +58,7 @@ const router = {
 			}
 		}
 		
-		
+		console.log('login|tokenInfo', tokenInfo);
 		
 		const token = getToken(tokenInfo);
 		
@@ -64,14 +67,14 @@ const router = {
 		return userData;
 	},
 	updateUserProfile: async (event, context) => {
-		const { userInfo,token } = event;
+		const { userInfo, token } = event;
 		
 		const db = uniCloud.database();
 		
 		const payload = verifyToken(token);
 		
 		const dbRes = await db.collection("users").where({
-			openid:payload.openid
+			_id: payload.tokenInfo.id
 		}).update({
 			nickName:userInfo.nickName,
 			avatarUrl:userInfo.avatarUrl,

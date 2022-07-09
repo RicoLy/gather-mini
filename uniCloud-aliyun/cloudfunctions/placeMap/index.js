@@ -2,7 +2,7 @@
 const db = uniCloud.database();
 const dbCmd = db.command;
 const {gdKey} = require('const-info');
-const {verifyToken, responseErr, responseOk, checkHasRole} = require('wx-common');
+const {verifyToken, msgSecCheck, responseErr, responseOk, checkHasRole} = require('wx-common');
 
 const getLocationByGeo = async (coordinate) => {
 	const url = `https://restapi.amap.com/v3/geocode/regeo?key=${gdKey}&location=${coordinate}`;
@@ -19,9 +19,6 @@ const getLocationByGeo = async (coordinate) => {
 // router 路由
 const router = {
 	listByGeo: async (event, context) => {
-		const {payload} = event;
-		const {tokenInfo} = payload;
-		console.log('tokenInfo', tokenInfo);
 		const dbRes = await db.collection('placeMaps').where({
 			geopoint:dbCmd.geoNear({
 				geometry: new db.Geo.Point(event.longitude, event.latitude),
@@ -80,16 +77,19 @@ const router = {
 		}
 		console.log("searchPlace|where", where);
 		const dbRes = await dbJQL.collection('placeMaps').where(where)
-		.limit(100)
+		.limit(200)
 		.get()
 		
 		//返回数据给客户端
 		return dbRes?dbRes.data:null;
 	},
 	updatePlace: async (event, context) => {
-		if (!checkHasRole('admin', event)) {
+		const {payload} = event;
+		const {tokenInfo} = payload;
+		if (!checkHasRole(['admin', 'updatePlace'], tokenInfo)) {
 			return responseErr("暂无权限,请联系管理员！")
 		}
+		const {openid} = tokenInfo;
 		const {params} = event;
 		const {
 			id,
@@ -102,6 +102,11 @@ const router = {
 			businessHours,
 			type
 		} = params;
+		// 内容敏感性校验
+		const res = await msgSecCheck(openid,`${name}|${intro}|${phone}|${privateRoom}|${businessHours}`);
+		if(res.result.suggest!="pass"){
+			return responseErr("内容不安全有敏感词汇");
+		}
 		const coordinate = `${longitude},${latitude}`;
 		const location = await getLocationByGeo(coordinate);
 		const dbRes = await db.collection("placeMaps").where({
@@ -118,15 +123,20 @@ const router = {
 			coordinate: coordinate,
 			geopoint: new db.Geo.Point(+longitude, +latitude),
 			formattedAddress: location.formatted_address,
-			type: type
+			type: type,
+			userId: tokenInfo.id
 		})
 		
 		return responseOk(dbRes);
 	},
 	addPlace: async (event, context) => {
-		if (!checkHasRole('admin', event)) {
+		const {payload} = event;
+		const {tokenInfo} = payload;
+		
+		if (!checkHasRole(['admin', 'addPlace'], tokenInfo)) {
 			return responseErr("暂无权限,请联系管理员！")
 		}
+		const {openid, id} = tokenInfo;
 		const {params} = event;
 		const {
 			name,
@@ -138,6 +148,11 @@ const router = {
 			businessHours,
 			type
 		} = params;
+		// 内容敏感性校验
+		const rsp = await msgSecCheck(openid,`${name}|${intro}|${phone}|${privateRoom}|${businessHours}`);
+		if(rsp.result.suggest!="pass"){
+			return responseErr("内容不安全有敏感词汇");
+		}
 		const coordinate = `${longitude},${latitude}`;
 		const location = await getLocationByGeo(coordinate);
 		console.log(location);
@@ -153,7 +168,8 @@ const router = {
 			coordinate: coordinate,
 			geopoint: new db.Geo.Point(+longitude, +latitude),
 			formattedAddress: location.formatted_address,
-			type: type
+			type: type,
+			userId: id
 		});
 		
 		return responseOk(res)
@@ -171,7 +187,9 @@ const router = {
 		return dbRes?dbRes.data:null;
 	},
 	deletePlaceById: async (event, context) => {
-		if (!checkHasRole('admin', event)) {
+		const {payload} = event;
+		const {tokenInfo} = payload;
+		if (!checkHasRole(['admin', 'deletePlaceById'], tokenInfo)) {
 			return responseErr("暂无权限,请联系管理员！")
 		}
 		console.log(event);

@@ -100,16 +100,18 @@ const responseOk = (data) => {
 	return {code: 0, data, msg: "ok"}
 }
 
-const checkHasRole = (role, event) => {
-	const {payload} = event;
-	const {tokenInfo} = payload;
+const checkHasRole = (roles, tokenInfo) => {
 	console.log('tokenInfo', tokenInfo);
 	
-	if(!tokenInfo.roles || !tokenInfo.roles.includes('admin')) {
+	if(!tokenInfo.roles) {
 		return false;
-	} else {
-		return true;
+	} 
+	for (var i = 0; i < roles.length; i++) {
+		if (tokenInfo.roles.includes(roles[i])) {
+			return true;
+		}
 	}
+	return false;
 }
 
 module.exports = {

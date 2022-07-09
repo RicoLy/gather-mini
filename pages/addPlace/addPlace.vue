@@ -14,8 +14,8 @@
 		</uni-card>
 		<uni-card :is-shadow="true" is-full class="flex-column">
 			<view class="flex align-center" style="height: 70rpx;">
-				<text class="flex-1 font-md">电话</text>
-				<input v-model="phone" class="uni-input bg-light flex-3" placeholder="电话" />
+				<text class="flex-1 font-md">联系方式</text>
+				<input v-model="phone" class="uni-input bg-light flex-3" placeholder="联系方式" />
 			</view>
 		</uni-card>
 		<uni-card :is-shadow="true" is-full class="flex-column">
@@ -48,7 +48,7 @@
 				{{address}}
 			</view>
 		</uni-card>
-		<button type="primary" class="fixed-bottom" @click="btnSavePlaces" >保存</button>
+		<button type="primary" class="fixed-bottom" @click="btnSavePlaces">保存</button>
 	</view>
 </template>
 
@@ -146,7 +146,7 @@
 				}
 				
 			},
-			btnSavePlaces(){
+			async btnSavePlaces(){
 				if(this.name == "")return uni.showToast({
 					icon:"none",
 					mask:true,
@@ -158,7 +158,7 @@
 					title:"请选择正确的地址"
 				})
 				
-				cloudApi.call({
+				const rsp = await cloudApi.call({
 					name: "placeMap",
 					data: {
 						action: this.id?"updatePlace":"addPlace",
@@ -174,21 +174,19 @@
 							type: this.type
 						},
 					},
-					success: (res) => {
-						const result = res.result;
-						console.log(result);
-						if(result.code !== 0) {
-							uni.showToast({
-								title: result.msg,
-								mask:true,
-								icon: 'none',
-								duration: 2000
-							});
-						} else {
-							uni.navigateBack()
-						}
-					}
+					
 				})
+				const result = rsp.result;
+				console.log(result);
+				if(result.code !== 0) {
+					uni.showToast({
+						title: result.msg,
+						mask:true,
+						icon: 'none'
+					});
+				} else {
+					uni.navigateBack()
+				}
 			}
 		}
 	}
