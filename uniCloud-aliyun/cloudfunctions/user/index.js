@@ -76,12 +76,13 @@ const router = {
 		const dbRes = await db.collection("users").where({
 			_id: payload.tokenInfo.id
 		}).update({
-			nickName:userInfo.nickName,
-			avatarUrl:userInfo.avatarUrl,
-			gender:userInfo.gender,
-			country:userInfo.country,
-			province:userInfo.province,
-			city:userInfo.city
+			nickName: userInfo.nickName,
+			avatarUrl: userInfo.avatarUrl,
+			gender: userInfo.gender,
+			country: userInfo.country,
+			province: userInfo.location.province,
+			city: userInfo.location.city,
+			district: userInfo.location.district
 		});
 		
 		return dbRes.data;

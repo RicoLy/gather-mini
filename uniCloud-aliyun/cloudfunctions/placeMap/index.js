@@ -44,14 +44,17 @@ const router = {
 	search: async (event, context) => {
 		console.log("searchPlace|event", event);
 		const {params} = event;
-		const {keywords, city} = params;
-		const url = `https://restapi.amap.com/v3/place/text?keywords=${keywords}&city=${city}&offset=20&page=1&key=${gdKey}&extensions=all`;
+		const {keywords, location} = params;
+		console.log('params', params);
+		const url = `https://restapi.amap.com/v3/place/around?key=${gdKey}&location=${location}&keywords=${keywords}&types=&radius=3000&offset=20&page=1&extensions=all`;
+		// const url = `https://restapi.amap.com/v3/place/text?keywords=${keywords}&city=${city}&offset=20&page=1&key=${gdKey}&extensions=all`;
 		const res = await uniCloud.httpclient.request(
 			url,
 			{
 				dataType:"json"
 			}
 		);
+		console.log('search|res.data', res.data.pois[0]);
 		return res.data.pois;
 	},
 	getPlaces: async (event, context) => {

@@ -74,6 +74,9 @@
 			}
 		},
 		onLoad(options) {
+			uni.setNavigationBarTitle({
+				title: options.id?'编辑餐厅信息':'添加餐厅'
+			});
 			if(options.id){
 				this.id = options.id;
 				cloudApi.call({
